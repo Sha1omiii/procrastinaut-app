@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deleting A Task</title>
+</head>
+<body>
+    <h1>Are you sure about deleting the to do task "{{ todo_task.title}}"?</h1>
+    <form method="post" action="{% url 'delete_todo_task' project.pk todo_task.pk %}">
+        {% csrf_token %}
+        <button type="submit">Yes, delete</button>
+    </form>
+    <a href="{% url 'project_detail' project.pk %}">Cancel</a>
+</body>
+</html>

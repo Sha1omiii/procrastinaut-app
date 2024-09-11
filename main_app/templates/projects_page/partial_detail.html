@@ -1,0 +1,19 @@
+<div class="project-info">
+    <h2>{{ project.name }}</h2>
+    <p>{{ project.description }}</p>
+
+    {% if project.owner == request.user %}
+        <h3>Invite Team Members</h3>
+        <a href="{% url 'invite_your_team' project.pk %}">Invite</a>
+    {% endif %}
+    <a href="{% url 'update_project' project.pk %}">Edit Project</a>
+    <div>
+        <h3>Tasks</h3>
+        <ul>
+            {% for task in project.todo_tasks.all %}
+                <li>{{ task.title }} - {{ "Completed" if task.is_completed else "Not Completed" }}</li>
+            {% endfor %}    
+        </ul>
+        <a href="{% url 'create_todo_task' project.pk%}">Add task</a>
+    </div>
+</div>

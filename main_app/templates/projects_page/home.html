@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}" />
+    
+    <title>ProcrastinAut</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">Profile</a></li>
+                <li>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit">Logout</button>
+                    </form>
+                </li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'signup' %}">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <h1>ProcrastinAut</h1>
+    <h2>Collaborate with your team and Plan your to do tasks</h2>
+
+    <!-- Instruction Section -->
+    <section class="instructions">
+        <h3>How to Use</h3>
+        <ol>
+            <li><strong>Create a Project:</strong> Start by creating a new project for your team. This will be the workspace where all tasks and ideas are organized.</li>
+            <li><strong>Add To-Do Tasks:</strong> Once your project is set up, you can add tasks. Fill in the task details, assign deadlines, and set reminders if needed.</li>
+            <li><strong>Track Task Completion:</strong> Mark tasks as completed by checking the box next to them. Completed tasks will appear with a strikethrough.</li>
+            <li><strong>Suggest Improvements:</strong> Team members can suggest improvements or additions to tasks by submitting suggestions under each task.</li>
+            <li><strong>Vote on Tasks:</strong> Use the voting feature to prioritize tasks. The tasks with more votes get higher attention from the team.</li>
+            <li><strong>Edit or Delete Tasks:</strong> If you need to make changes or remove a task, use the edit and delete buttons to manage tasks efficiently.</li>
+            <li><strong>Invite Team Members:</strong> Invite team members to your project and collaborate on tasks together. They will be able to add, vote, and suggest tasks.</li>
+            <li><strong>Chat with Your Team:</strong> Use the real-time chat feature to discuss tasks and collaborate more effectively.</li>
+        </ol>
+    </section>
+
+</body>
+</html>

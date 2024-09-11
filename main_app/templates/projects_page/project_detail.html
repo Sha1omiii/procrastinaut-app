@@ -1,0 +1,176 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/project_detail.css' %}" />
+    <title>{{ project.name }}</title>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">ProcrastinAut</a>
+        <p><a href="{% url 'profile' %}">Profile</a></p>
+    </nav>
+    <div class="container">
+        <div class="project-info">
+            <h1>{{ project.name }}</h1>
+            <p>{{ project.description }}</p>
+            {% if user == project.owner %}
+            <a href="{% url 'update_project' project.pk %}" class="edit-btn">Edit Project</a>
+            <a href="/projects/" class="edit-btn">Back to Projects</a>
+
+            <div class="invite-section">
+                <h3>Invite others</h3>
+                <a href="{% url 'invite_your_team' project.pk %}" class="invite-btn">Invite</a>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="tasks">
+            <h2>Incomplete Tasks</h2>
+            <ul>
+                {% for todo_task in project.todo_tasks.all %}
+                    {% if not todo_task.is_completed %}
+                    <li class="task-item">
+                        <div class="task-content">
+                            <div class="task-details">
+                                <input type="checkbox" class="complete-checkbox" data-task-id="{{ todo_task.pk }}" {% if todo_task.is_completed %}checked{% endif %}>
+                                <strong>{{ todo_task.title }}</strong> - Not Completed
+                                {% if todo_task.notes %}
+                                    <p>Notes: {{ todo_task.notes }}</p>
+                                {% endif %}
+                                <br>Votes: {{ todo_task.votes }}
+                             </div>
+                            <div class="task-actions">
+                                <a href="{% url 'todo_task_vote' project.pk todo_task.pk %}" class="vote-btn">Vote</a>
+                                <a href="{% url 'update_todo_task' project.pk todo_task.pk %}" class="edit-task-btn">Edit Task</a>
+                                <a href="{% url 'delete_todo_task' project.pk todo_task.pk %}" class="delete-task-btn">Delete Task</a>
+                            </div>
+                            <div class="suggestions">
+                                <h4>Suggestions:</h4>
+                                <ul>
+                                    {% for s in todo_task.suggestions.splitlines %}
+                                        <li>{{ s }}</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <hr>
+            <h2>Completed Tasks</h2>
+            <ul>
+                {% for todo_task in project.todo_tasks.all %}
+                    {% if todo_task.is_completed %}
+                    <li class="task-item">
+                        <div class="task-content">
+                            <div class="task-details">
+                                <input type="checkbox" class="complete-checkbox" data-task-id="{{ todo_task.pk }}" checked>
+                                <strong>{{ todo_task.title }}</strong> - Completed
+                                {% if todo_task.notes %}
+                                    <p>Notes: {{ todo_task.notes }}</p>
+                                {% endif %}
+                                <br>Votes: {{ todo_task.votes }}
+
+                            </div>
+                            <div class="task-actions">
+                                <a href="{% url 'todo_task_vote' project.pk todo_task.pk %}" class="vote-btn">Vote</a>
+                                <a href="{% url 'update_todo_task' project.pk todo_task.pk %}" class="edit-task-btn">Edit Task</a>
+                                <a href="{% url 'delete_todo_task' project.pk todo_task.pk %}" class="delete-task-btn">Delete Task</a>
+                            </div>
+                        </div>
+                        <div class="suggestions">
+                            <h4>Suggestions:</h4>
+                            <ul>
+                                {% for s in todo_task.suggestions.splitlines %}
+                                    <li>{{ s }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <form method="post" action="{% url 'todo_task_suggest' project.pk todo_task.pk %}" class="suggestion-form">
+                            {% csrf_token %}
+                            <input type="text" name="suggestion" placeholder="Add a suggestion">
+                            <button type="submit" class="submit-btn">Submit</button>
+                        </form>
+                    </li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+            <a href="{% url 'create_todo_task' project.pk %}" class="create-task-btn">Add Task</a>
+        </div>
+    </div>
+    
+    <div class="chat">
+        <h3>Chat Here</h3>
+        <div id="chat-field"></div>
+        <input id="chat-input" type="text" placeholder="Type your message">
+        <button id="chat-submit">Send</button>
+    </div>
+
+    <script>
+        // WebSocket for chat -- runs on wss
+        const chatSocket = new WebSocket(
+            `${window.location.protocol === 'https:' ? 'wss://' : 'ws://'}${window.location.host}/ws/projects/{{ project.pk }}/`
+        );
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-field').innerHTML += ('<br>' + data.message);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Unexpectedly, the chat socket has closed:', e.code, e.reason);
+        };
+
+        document.querySelector('#chat-input').focus();
+        document.querySelector('#chat-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {
+                document.querySelector('#chat-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-input');
+            const message = messageInputDom.value;
+            if (chatSocket.readyState === WebSocket.OPEN) {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInputDom.value = '';
+            } else {
+                console.error('Websocket is not open, so you can\'t send messages right now.');
+            }
+        };
+
+        // Checkbox completion functionality
+        document.querySelectorAll('.complete-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const taskId = this.dataset.taskId;
+                const isCompleted = this.checked;
+
+                try {
+                    fetch(`/tasks/${taskId}/update_status/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    },
+                    body: JSON.stringify({ is_completed: isCompleted })
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to update task status')
+                }
+                location.reload();
+
+                } catch (error) {
+                    console.error('Error: ', error)
+                }
+            });
+        });
+    </script>
+</body>
+</html>

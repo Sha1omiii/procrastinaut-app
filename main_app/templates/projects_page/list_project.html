@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/list_project.css' %}" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <title>My Projects</title>
+</head>
+<body>
+    <nav>
+        <a href="/" class="logo">ProcrastinAut</a>
+        <p><a href="{% url 'profile' %}">Profile</a></p>
+    </nav>
+    <div class="container">
+        <div class="project-list"></div>
+            <h1>My Projects</h1>
+            <ul>
+                {% for project in projects %}
+                    <li class="project-card">
+                        <a href="{% url 'project_detail' project.pk %}" class="project-link">{{ project.name }}</a>
+                        <div class="project-actions">
+                            <button class="edit-btn"><a href="{% url 'update_project' project.pk %}">Edit</a></button>
+                            <form method="post" action="{% url 'delete_project' project.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete-btn">Delete</button>
+                            </form>
+                        </div>
+
+                    </li>
+                {% endfor %}
+            </ul>
+            <a class="create-project" href="{% url 'create_project' %}">Create A New Project</a>
+
+        </div>
+    
+        <div class="main">
+            <h1>Select a project to see details</h1>
+            <div id="project-detail"></div>
+            <div id="loading">Loading....</div>
+        </div>
+    </div>
+
+    <!-- finishing up in the future -->
+    <!-- <script>
+        // still doesnt work
+        // goal it to load a page dynamically (like notion.so) and using sidebar functionality
+        $(document).ready(function() { 
+            $('.project-link').click(function(e) { //when a user clicks a link
+                e.preventDefault();
+                var projectId = $(this).data('id');
+
+                $('#loading').show();
+                $('#project-detail').empty();
+
+                $.ajax({
+                    url: '/projects/' + projectId + '/',
+                    type: 'GET',
+                    success: function(response) {
+                        $('#loading').hide();
+                        $('#project-detail').html(response);
+                    },
+                    error: function(error) {
+                        $('#loading').hide();
+                        $('#project-detail').html('<p style="color: red">Failed to load up your project details</p>');
+                    }
+                });
+            });
+        });
+    </script> -->
+</body>
+</html>
