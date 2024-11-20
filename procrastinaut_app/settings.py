@@ -107,12 +107,14 @@ WSGI_APPLICATION = 'procrastinaut_app.wsgi.application'
 #             'NAME': 'procrastinaut',
 #         }
 #     }
+
 import dj_database_url
+import os
 
 if 'DATABASE_URL' in os.environ:
     DATABASES = {
-        "default": dj_database_url.config(
-            env='DATABASE_URL',
+        'default': dj_database_url.config(
+            default=os.getenv('DATABASE_URL'),
             conn_max_age=600,
             conn_health_checks=True,
             ssl_require=True,
@@ -123,12 +125,13 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': os.getenv('DB_NAME', 'procrastinaut'),
-            'USER': os.getenv('DB_USER', 'your_local_user'),
-            'PASSWORD': os.getenv('DB_PASSWORD', 'your_local_password'),
+            'USER': os.getenv('DB_USER', 'local_user'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'local_password'),
             'HOST': os.getenv('DB_HOST', 'localhost'),
             'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
+
 
 
 
