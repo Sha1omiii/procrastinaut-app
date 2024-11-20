@@ -90,17 +90,26 @@ WSGI_APPLICATION = 'procrastinaut_app.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': 'procrastinaut',
+# if 'ON_HEROKU' in os.environ:
+#     DATABASES = {
+#         "default": dj_database_url.config(
+#             env='DATABASE_URL',
+#             conn_max_age=600,
+#             conn_health_checks=True,
+#             ssl_require=True,
+#         ),
 #     }
-# }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'procrastinaut',
+#         }
+#     }
+import dj_database_url
 
-
-if 'ON_HEROKU' in os.environ:
+if 'DATABASE_URL' in os.environ:
     DATABASES = {
         "default": dj_database_url.config(
             env='DATABASE_URL',
@@ -113,10 +122,14 @@ else:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'procrastinaut',
-            # The value of 'NAME' should match the value of 'NAME' you replaced.
+            'NAME': os.getenv('DB_NAME', 'procrastinaut'),
+            'USER': os.getenv('DB_USER', 'your_local_user'),
+            'PASSWORD': os.getenv('DB_PASSWORD', 'your_local_password'),
+            'HOST': os.getenv('DB_HOST', 'localhost'),
+            'PORT': os.getenv('DB_PORT', '5432'),
         }
     }
+
 
 
 
