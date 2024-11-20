@@ -1,1 +1,1 @@
-web: gunicorn procrastinaut_app.wsgi
+web: daphne -b 0.0.0.0 -p $PORT procrastinaut_app.asgi:application

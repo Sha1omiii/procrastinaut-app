@@ -1,0 +1,252 @@
+body {
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #0B0C10;
+    color: #C5C6C7;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+nav {
+    background-color: #1F2833;
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    color: #66FCF1;
+    text-decoration: none;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+nav p a {
+    color: #66FCF1;
+    text-decoration: none;
+    font-size: 18px;
+}
+
+nav p a:hover {
+    text-decoration: underline;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.project-info {
+    background-color: #1F2833;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-out;
+}
+
+.project-info h1 {
+    color: #66FCF1;
+    margin-top: 0;
+}
+
+.invite-section {
+    margin-top: 20px;
+}
+
+.invite-btn {
+    background-color: #45A29E;
+    color: #C5C6C7;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.invite-btn:hover {
+    background-color: #66FCF1;
+    color: #0B0C10;
+    transform: scale(1.05);
+}
+
+.edit-btn {
+    background-color: #66FCF1;
+    color: #0B0C10;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.edit-btn:hover {
+    background-color: #45A29E;
+    color: #C5C6C7;
+}
+
+.tasks {
+    background-color: #1F2833;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.tasks h2 {
+    color: #66FCF1;
+    margin-bottom: 15px;
+}
+
+.task-item {
+    background-color: #C5C6C7;
+    color: #1F2833;
+    padding: 20px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.task-item:hover {
+    background-color: #66FCF1;
+    color: #0B0C10;
+    transform: translateY(-5px);
+}
+
+.task-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.task-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.suggestions {
+    background-color: #0B0C10;
+    color: #C5C6C7;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #66FCF1;
+}
+
+.suggestions ul {
+    list-style-type: disc;
+    margin: 10px;
+    padding-left: 20px;
+}
+
+.task-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: flex-end;
+}
+
+.vote-btn, .edit-task-btn, .delete-task-btn, .create-task-btn {
+    background-color: #45A29E;
+    color: #C5C6C7;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.vote-btn:hover, .edit-task-btn:hover, .delete-task-btn:hover, .create-task-btn:hover {
+    background-color: #66FCF1;
+    color: #0B0C10;
+}
+
+.suggestion-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.suggestion-form input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #66FCF1;
+    border-radius: 5px;
+    color: #1F2833;
+}
+
+.submit-btn {
+    background-color: #45A29E;
+    color: #C5C6C7;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #66FCF1;
+    color: #0B0C10;
+}
+
+
+.chat {
+    background-color: #1F2833;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 0.5s ease-out;
+}
+
+#chat-field {
+    height: 190px;
+    overflow-y: auto;
+    background-color: #0B0C10;
+    color: #C5C6C7;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #66FCF1;
+}
+
+#chat-input {
+    width: calc(100% - 90px);
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #66FCF1;
+    color: #1F2833;
+    background-color: #C5C6C7;
+}
+
+#chat-submit {
+    background-color: #45A29E;
+    color: #C5C6C7;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#chat-submit:hover {
+    background-color: #66FCF1;
+    color: #0B0C10;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

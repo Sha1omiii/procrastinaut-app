@@ -1,0 +1,83 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background-color: #0B0C10;
+    color: #C5C6C7;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.container {
+    background-color: #1F2833;
+    padding: 30px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.1s ease-out;
+}
+
+h1 {
+    text-align: center;
+    color: #66FCF1;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input, form button {
+    margin-bottom: 16px;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+}
+
+form button {
+    background-color: #66FCF1;
+    color: #0B0C10;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #45A29E;
+}
+
+form input {
+    background-color: #C5C6C7;
+    color: #0B0C10;
+}
+
+p { 
+    text-align: center;
+    color: #C5C6C7;
+}
+
+p a {
+    color: #66FCF1;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+p a:hover {
+    text-decoration: underline;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
